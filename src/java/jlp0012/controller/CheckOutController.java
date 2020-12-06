@@ -102,7 +102,7 @@ public class CheckOutController extends HttpServlet {
                         Map<HotelRoomTypeDTO, Integer> list = cart.getItems();
                         for (HotelRoomTypeDTO hotelRoomDto : list.keySet()) {
                             if (!hotelRoomDao.checkQuantity(hotelRoomDto.getHotelRoomId(), checkInDate, checkOutDate, list.get(hotelRoomDto))) {
-                                error.add("Not enough " + mapRoomType.get(hotelRoomDto.getHotelRoomId()) + " room in " + mapHotel.get(hotelRoomDto.getHotelRoomId()) + " hotel " + "<br>");
+                                error.add("Not enough " + mapRoomType.get(hotelRoomDto.getRoomTypeId()) + " room in " + mapHotel.get(hotelRoomDto.getHotelRoomId()) + " hotel " + "<br>");
                                 check = false;
                             }
                         }

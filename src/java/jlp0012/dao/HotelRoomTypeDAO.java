@@ -102,7 +102,7 @@ public class HotelRoomTypeDAO implements Serializable {
                     + "FROM tblHotelRoomType "
                     + "JOIN tblRoomType ON tblRoomType.roomTypeId = tblHotelRoomType.roomTypeId "
                     + "JOIN tblHotel ON tblHotel.hotelId = tblHotelRoomType.hotelId "
-                    + "WHERE areaId = ? AND tblHotelRoomType.statusId = 1 AND tblRoomType.statusId = 1 AND tblHotel.statusId = 1 AND hotelName LIKE ? AND (available > ? OR( "
+                    + "WHERE areaId = ? AND tblHotelRoomType.statusId = 1 AND tblRoomType.statusId = 1 AND tblHotel.statusId = 1 AND hotelName LIKE ? AND (available >= ? OR( "
                     + " hotelRoomId NOT IN ( "
                     + "SELECT tblHotelRoomType.hotelRoomId "
                     + "FROM tblOrderDetail "
@@ -154,7 +154,7 @@ public class HotelRoomTypeDAO implements Serializable {
                     + "FROM tblHotelRoomType "
                     + "JOIN tblRoomType ON tblRoomType.roomTypeId = tblHotelRoomType.roomTypeId "
                     + "JOIN tblHotel ON tblHotel.hotelId = tblHotelRoomType.hotelId "
-                    + "WHERE tblHotelRoomType.statusId = 1 AND tblRoomType.statusId = 1 AND tblHotel.statusId = 1 AND hotelName LIKE ? AND (available = ? "
+                    + "WHERE tblHotelRoomType.statusId = 1 AND tblRoomType.statusId = 1 AND tblHotel.statusId = 1 AND hotelName LIKE ? AND (available >= ? "
                     + "OR hotelRoomId NOT IN ( "
                     + "SELECT tblHotelRoomType.hotelRoomId "
                     + "FROM tblOrderDetail  "
@@ -202,7 +202,7 @@ public class HotelRoomTypeDAO implements Serializable {
         try {
             String sql = "SELECT hotelRoomId "
                     + "FROM tblHotelRoomType  "
-                    + "WHERE hotelRoomId = ? AND tblHotelRoomType.statusId = 1 AND( available > ? OR hotelRoomId not in ( "
+                    + "WHERE hotelRoomId = ? AND tblHotelRoomType.statusId = 1 AND( available >= ? OR hotelRoomId in ( "
                     + "SELECT tblHotelRoomType.hotelRoomId "
                     + "FROM tblOrderDetail "
                     + "JOIN tblOrder on tblOrderDetail.orderId = tblOrder.orderId "
@@ -211,7 +211,7 @@ public class HotelRoomTypeDAO implements Serializable {
                     + "OR (toDate >= ? AND toDate <= ? ) "
                     + "AND (tblOrder.statusId = 5 OR tblOrder.statusId = 7)"
                     + "GROUP BY tblHotelRoomType.hotelRoomId, tblHotelRoomType.quantity "
-                    + "having tblHotelRoomType.quantity - COALESCE(SUM(DISTINCT tblOrderDetail.quantity),0) > ? )) ";
+                    + "having tblHotelRoomType.quantity - COALESCE(SUM(DISTINCT tblOrderDetail.quantity),0) >= ? )) ";
             con = DBUtil.getConnection();
             stm = con.prepareStatement(sql);
             stm.setInt(1, hotelRoomId);
